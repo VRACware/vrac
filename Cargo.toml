@@ -1,0 +1,33 @@
+[workspace]
+members = [
+    ".",
+    "window",
+]
+
+[workspace.dependencies]
+winit = "0.29.15"
+vulkano = { git = "https://github.com/vulkano-rs/vulkano", branch = "master"}
+vulkano-win = { git = "https://github.com/vulkano-rs/vulkano", branch = "master"}
+vulkano-util = { git = "https://github.com/vulkano-rs/vulkano", branch = "master"}
+vulkano-macros = { git = "https://github.com/vulkano-rs/vulkano", branch = "master"}
+vulkano-shaders = { git = "https://github.com/vulkano-rs/vulkano", branch = "master"}
+
+[dev-dependencies]
+criterion = { version = "0.5.1", features = ["html_reports"] }
+
+[package]
+name = "vrac"
+version = "0.1.0"
+edition = "2021"
+
+[profile.dev]
+opt-level = 1
+lto = false
+
+[profile.release]
+opt-level = 3
+lto = true
+
+[[bench]]
+name = "bench"
+harness = false
