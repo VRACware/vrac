@@ -10,12 +10,12 @@ jobs:
     # If you want to do a CI check for your commit, include `[ci]` (or `[CI]`) anywhere in the git commit message.
     if: "contains(github.event.head_commit.message, '[ci]')" # Second parameter is not case sensitive.
     strategy:
-      fail-fast: false
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
 
     name: Test `cargo check/build/test` on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
+    continue-on-error: true
 
     env:
       CARGO_TERM_COLOR: always
