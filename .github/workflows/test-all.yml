@@ -1,4 +1,4 @@
-name: check/build/test all 
+name: Recursive Rust check/build/test
 
 on: [push, pull_request]
 
@@ -27,22 +27,30 @@ jobs:
       run: |
         rm -r cloned_ci || true
         git clone https://github.com/VRACware/vrac --recurse-submodules cloned_ci
-        cd cloned_ci
-        ls
-        cd submodules
-        ls
-        cd window
-        ls
+    # - name: Debug submodule directories
+    #   shell: bash
+    #   run: |
+    #     cd cloned_ci
+    #     printf "\n        Vrac submodules: \n\n"
+    #     git submodule foreach --recursive pwd
     - name: Check each
       shell: bash
       run: |
-        echo $PWD
-        ls
         cd cloned_ci
-        git submodule foreach --recursive `cargo check --verbose`
+        cargo check --verbose
+        printf "\n        Top-level Vrac done. Now its submodules: \n\n"
+        git submodule foreach --recursive pwd && cargo check
     - name: Build each
       shell: bash
-      run: git submodule foreach --recursive `cargo build --verbose`
+      run: |
+        cd cloned_ci
+        cargo build --verbose
+        printf "\n        Top-level Vrac done. Now its submodules: .\n\n"
+        git submodule foreach --recursive pwd && cargo build
     - name: Test each
       shell: bash
-      run: git submodule foreach --recursive `cargo test --verbose`
+      run: |
+        cd cloned_ci
+        cargo test --verbose
+        printf "\n        Top-level Vrac done. Now its submodules: \n\n"
+        git submodule foreach --recursive pwd && cargo test
