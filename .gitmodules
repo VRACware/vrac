@@ -1,8 +1,4 @@
-[submodule "commons"]
-	path = commons
-	url = https://github.com/VRACware/vrac-commons.git
-    branch = main
-[submodule "window"]
-	path = window
+[submodule "submodules/window"]
+	path = submodules/window
 	url = https://github.com/VRACware/vrac-window.git
 	branch = main

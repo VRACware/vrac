@@ -1,0 +1,39 @@
+name: check/build/test all 
+
+on: [push, pull_request]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  full:
+    # If you want to do a CI check for your commit, include `[ci]` (or `[CI]`) anywhere in the git commit message.
+    if: "contains(github.event.head_commit.message, '[ci]')" # Second parameter is not case sensitive.
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+
+    name: Test `cargo check/build/test` on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+
+    env:
+      CARGO_TERM_COLOR: always
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Clone whole Rust workspace
+      shell: bash
+      run: |
+        rm -r cloned_ci || true
+        git clone https://github.com/VRACware/vrac --recurse-submodules cloned_ci
+        cd cloned_ci
+    - name: Check each
+      shell: bash
+      run: git submodule foreach --recursive `cargo check --verbose`
+    - name: Build each
+      shell: bash
+      run: git submodule foreach --recursive `cargo build --verbose`
+    - name: Test each
+      shell: bash
+      run: git submodule foreach --recursive `cargo test --verbose`
