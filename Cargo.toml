@@ -5,7 +5,7 @@ members = [
 ]
 
 [workspace.dependencies]
-winit = "0.29.15"
+winit = "0.29.0"
 vulkano = { git = "https://github.com/vulkano-rs/vulkano", branch = "master"}
 vulkano-win = { git = "https://github.com/vulkano-rs/vulkano", branch = "master"}
 vulkano-util = { git = "https://github.com/vulkano-rs/vulkano", branch = "master"}
@@ -18,7 +18,20 @@ criterion = { version = "0.5.1", features = ["html_reports"] }
 [package]
 name = "vrac"
 version = "0.1.0"
+# authors = [ "Vraccer" ]
 edition = "2021"
+license = "MIT"
+description = "The windowing system of Vrac"
+documentation = "https://docs.rs/vrac"
+repository = "https://github.com/VRACware/vrac"
+readme = "README.md"
+keywords = ["vulkan", "GUI"]
+categories = ["rendering::engine"]
+
+[dependencies]
+vulkano = { workspace = true }
+vulkano-util = { workspace = true }
+winit = { workspace = true }
 
 [profile.dev]
 opt-level = 1
